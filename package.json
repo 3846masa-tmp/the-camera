@@ -1,6 +1,9 @@
 {
   "scripts": {
+    "clean": "rimraf dist/ .cache/",
     "start": "parcel --hmr-port 8080 src/index.html",
+    "prebuild": "npm run clean",
+    "build": "parcel build src/index.html",
     "devtools": "react-devtools"
   },
   "devDependencies": {
@@ -12,6 +15,7 @@
     "prettier": "^1.14.3",
     "prettier-stylelint": "^0.4.2",
     "react-devtools": "^3.4.0",
+    "rimraf": "^2.6.2",
     "stylelint-config-prettier": "^4.0.0",
     "stylelint-config-recess-order": "^2.0.0"
   },
