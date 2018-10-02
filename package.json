@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "parcel --hmr-port 8080 src/index.html"
+    "start": "parcel --hmr-port 8080 src/index.html",
+    "devtools": "react-devtools"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -10,11 +11,13 @@
     "postcss-preset-env": "^6.0.7",
     "prettier": "^1.14.3",
     "prettier-stylelint": "^0.4.2",
+    "react-devtools": "^3.4.0",
     "stylelint-config-prettier": "^4.0.0",
     "stylelint-config-recess-order": "^2.0.0"
   },
   "dependencies": {
     "react": "^16.5.2",
+    "react-devtools-core": "^3.4.0",
     "react-dom": "^16.5.2",
     "react-hot-loader": "^4.3.11"
   },
