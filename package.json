@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "parcel --hmr-port 8080 src/index.html"
+  },
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "browserslist-config-google": "^1.5.0",
