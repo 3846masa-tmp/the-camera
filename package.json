@@ -1,10 +1,16 @@
 {
   "scripts": {
-    "clean": "rimraf dist/ .cache/",
-    "start": "parcel --hmr-port 8080 src/index.html",
     "prebuild": "npm run clean",
     "build": "parcel build src/index.html",
-    "devtools": "react-devtools"
+    "clean": "rimraf dist/ .cache/",
+    "devtools": "react-devtools",
+    "start": "parcel --hmr-port 8080 src/index.html"
+  },
+  "dependencies": {
+    "react": "^16.5.2",
+    "react-devtools-core": "^3.4.0",
+    "react-dom": "^16.5.2",
+    "react-hot-loader": "^4.3.11"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -18,12 +24,6 @@
     "rimraf": "^2.6.2",
     "stylelint-config-prettier": "^4.0.0",
     "stylelint-config-recess-order": "^2.0.0"
-  },
-  "dependencies": {
-    "react": "^16.5.2",
-    "react-devtools-core": "^3.4.0",
-    "react-dom": "^16.5.2",
-    "react-hot-loader": "^4.3.11"
   },
   "browserslist": "extends browserslist-config-google/modern"
 }
