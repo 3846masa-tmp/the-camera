@@ -1,0 +1,14 @@
+{
+  "modules": true,
+  "plugins": {
+    "postcss-modules": {
+      "camelCase": true,
+      "generateScopedName": "[name]_[local]_[hash:base64:5]"
+    },
+    "postcss-preset-env": {
+      "features": {
+        "nesting-rules": true
+      }
+    }
+  }
+}
