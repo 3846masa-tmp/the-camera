@@ -4,6 +4,8 @@ import styles from './styles.css';
 import Layout from '~/components/common/Layout';
 import CameraView from '~/components/camera/CameraView';
 import CameraController from '~/components/camera/CameraController';
+import takePhotoFromStream from '~/helpers/takePhotoFromStream';
+import saveAs from '~/helpers/saveAs';
 
 /**
  * @typedef State
@@ -29,12 +31,18 @@ class CameraPage extends React.Component {
     this.setState({ stream });
   }
 
+  onClickShutter = async () => {
+    const { stream } = this.state;
+    const blob = await takePhotoFromStream(stream);
+    saveAs(blob, `${Date.now()}.jpg`);
+  };
+
   render() {
     const { stream } = this.state;
     return (
       <Layout>
         <CameraView srcObject={stream} />
-        <CameraController />
+        <CameraController onClickShutter={this.onClickShutter} />
       </Layout>
     );
   }
