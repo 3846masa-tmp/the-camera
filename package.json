@@ -10,7 +10,8 @@
     "react": "^16.5.2",
     "react-devtools-core": "^3.4.0",
     "react-dom": "^16.5.2",
-    "react-hot-loader": "^4.3.11"
+    "react-hot-loader": "^4.3.11",
+    "ress": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
