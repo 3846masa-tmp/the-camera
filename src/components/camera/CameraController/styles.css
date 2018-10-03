@@ -1,0 +1,33 @@
+.base {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  grid-template-areas: '..... ..... shutter-button ..... .....';
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-column-gap: 10px;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.shutter-button {
+  position: relative;
+  grid-area: shutter-button;
+  margin: 25% 0;
+  background-color: #212121;
+  border: #ffffff solid 3px;
+  border-radius: 50%;
+  outline: none;
+  opacity: 0.75;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    background-color: #8e8e8e;
+  }
+
+  &::before {
+    display: block;
+    padding-top: 100%;
+    content: '';
+  }
+}
