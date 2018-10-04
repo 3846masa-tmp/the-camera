@@ -5,54 +5,54 @@ import Layout from '~/components/common/Layout';
 import CameraView from '~/components/camera/CameraView';
 import CameraController from '~/components/camera/CameraController';
 import takePhotoFromStream from '~/helpers/takePhotoFromStream';
-import saveAs from '~/helpers/saveAs';
-import getConstraintsWithFacingMode from '~/helpers/getConstraintsWithFacingMode';
-import getGeolocation from '~/helpers/getGeolocation';
+
+/**
+ * @typedef Props
+ * @property {Record<string, *>} constraints
+ * @property {'user' | 'environment'} facingMode
+ * @property {number} zoom
+ * @property {(blob: Blob) => void} onTakePhoto
+ * @property {() => void} onClickToggleFacingMode
+ * @property {(ev: any) => void} onChangeZoom
+ */
 
 /**
  * @typedef State
  * @property {MediaStream} stream
- * @property {Record<string, *>} constraints
- * @property {'user' | 'environment'} facingMode
- * @property {number} zoom
  */
 
+/** @extends {React.Component<Props, State>} */
 class CameraPage extends React.Component {
   /** @type {State} */
   state = {
     stream: null,
-    constraints: {},
-    facingMode: null,
-    zoom: 1,
   };
 
   componentDidMount() {
     this.initialize();
   }
 
-  /** @param {State} prevState */
-  componentDidUpdate(_prevProps, prevState) {
-    if (this.state.facingMode !== prevState.facingMode) {
+  componentDidUpdate(prevProps) {
+    if (this.props.facingMode !== prevProps.facingMode) {
       this.updateStream();
     }
-    if (this.state.zoom !== prevState.zoom) {
+    if (this.props.zoom !== prevProps.zoom) {
       this.updateZoom();
     }
   }
 
+  componentWillUnmount() {
+    this.closeStream();
+  }
+
   async initialize() {
-    await getGeolocation();
-    const constraints = {
-      user: await getConstraintsWithFacingMode('user'),
-      environment: await getConstraintsWithFacingMode('environment'),
-    };
-    const facingMode = constraints.environment ? 'environment' : 'user';
-    this.setState({ constraints, facingMode });
+    await this.updateStream();
+    await this.updateZoom();
   }
 
   async updateStream() {
     this.closeStream();
-    const { constraints, facingMode } = this.state;
+    const { constraints, facingMode } = this.props;
     if (constraints[facingMode]) {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: constraints[facingMode].recommended,
@@ -62,11 +62,14 @@ class CameraPage extends React.Component {
   }
 
   async updateZoom() {
-    const { stream, zoom } = this.state;
-    const videoTrack = stream.getVideoTracks()[0];
-    await videoTrack.applyConstraints({
-      advanced: [{ zoom }],
-    });
+    const { zoom } = this.props;
+    const { stream } = this.state;
+    if (stream && zoom) {
+      const videoTrack = stream.getVideoTracks()[0];
+      await videoTrack.applyConstraints({
+        advanced: [{ zoom }],
+      });
+    }
   }
 
   closeStream() {
@@ -81,45 +84,32 @@ class CameraPage extends React.Component {
   onClickShutter = async () => {
     const { stream } = this.state;
     const blob = await takePhotoFromStream(stream);
-    saveAs(blob, `${Date.now()}.jpg`);
+    this.props.onTakePhoto(blob);
   };
 
   get canToggleFacingMode() {
-    const { constraints } = this.state;
+    const { constraints } = this.props;
     return constraints.user && constraints.environment;
   }
 
   get zoomRangeOptions() {
-    const { constraints, facingMode } = this.state;
+    const { constraints, facingMode } = this.props;
     if (constraints[facingMode]) {
       return constraints[facingMode].capabilities.zoom;
     }
     return {};
   }
 
-  onClickToggleFacingMode = () => {
-    if (this.canToggleFacingMode) {
-      this.setState(({ facingMode: current }) => ({
-        facingMode: current === 'user' ? 'environment' : 'user',
-      }));
-    }
-  };
-
-  /** @param {React.FormEvent<HTMLInputElement>} ev */
-  onChangeZoom = (ev) => {
-    const value = ev.target.value;
-    this.setState({ zoom: value });
-  };
-
   render() {
+    const { onClickToggleFacingMode, onChangeZoom } = this.props;
     const { stream } = this.state;
     return (
       <Layout>
         <CameraView srcObject={stream} />
         <CameraController
           onClickShutter={this.onClickShutter}
-          onClickToggleFacingMode={this.onClickToggleFacingMode}
-          onChangeZoom={this.onChangeZoom}
+          onClickToggleFacingMode={onClickToggleFacingMode}
+          onChangeZoom={onChangeZoom}
           zoomRangeOptions={this.zoomRangeOptions}
           disabledToggleButton={!this.canToggleFacingMode}
         />
