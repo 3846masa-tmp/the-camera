@@ -1,3 +1,5 @@
+import { funny } from '~/filters/filters';
+
 const worker = new Worker('./worker.js');
 worker.addEventListener('error', console.error);
 
@@ -11,6 +13,12 @@ const filter = async (filterName, blob) => {
     width: imageBitmap.width,
     height: imageBitmap.height,
   });
+
+  if (filterName === 'funny') {
+    const fxCanvas = await funny(canvas, imageBitmap);
+    const filtered = new Promise((resolve) => fxCanvas.toBlob(resolve, 'image/jpeg'));
+    return filtered;
+  }
 
   const offscreen = canvas.transferControlToOffscreen();
   const waitPromise = new Promise((resolve) =>
