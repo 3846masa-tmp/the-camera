@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Layout from '~/components/common/Layout';
+import Loading from '~/components/common/Loading';
 import PreviewView from '~/components/preview/PreviewView';
 import PreviewController from '~/components/preview/PreviewControlll';
 import * as filters from '~/filters';
@@ -102,6 +103,7 @@ class PreviewPage extends React.Component {
           onSave={this.onSave}
           onClickFilterButton={this.onClickFilterButton}
         />
+        <Loading loading={loading} />
       </Layout>
     );
   }
