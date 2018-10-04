@@ -19,6 +19,7 @@
     "ress": "^1.2.2"
   },
   "devDependencies": {
+    "@3846masa/parcel-plugin-workers-patch": "github:3846masa-tmp/parcel-plugin-monkey-patch-for-wasm-in-worker",
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "browserslist-config-google": "^1.5.0",

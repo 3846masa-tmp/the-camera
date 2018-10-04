@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@3846masa/parcel-plugin-workers-patch@github:3846masa-tmp/parcel-plugin-monkey-patch-for-wasm-in-worker":
+  version "0.0.0"
+  resolved "https://codeload.github.com/3846masa-tmp/parcel-plugin-monkey-patch-for-wasm-in-worker/tar.gz/a40475be1dc89cb349be411e4b30b46cf0813f25"
+
 "@babel/code-frame@7.0.0-beta.44":
   version "7.0.0-beta.44"
   resolved "http://registry.npmjs.org/@babel/code-frame/-/code-frame-7.0.0-beta.44.tgz#2a02643368de80916162be70865c97774f3adbd9"

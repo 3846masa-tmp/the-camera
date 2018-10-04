@@ -4,7 +4,7 @@ import Layout from '~/components/common/Layout';
 import Loading from '~/components/common/Loading';
 import PreviewView from '~/components/preview/PreviewView';
 import PreviewController from '~/components/preview/PreviewControlll';
-import * as filters from '~/filters';
+import applyFilter from '~/filters/applyFilter';
 import EXIF from '~/helpers/EXIF';
 
 /**
@@ -51,12 +51,9 @@ class PreviewPage extends React.Component {
     const { original } = this.props;
     const { filterName } = this.state;
 
-    if (!filters[filterName]) {
-      this.updateFilteredBlob(original);
-      return;
-    }
     this.setState({ loading: true });
-    this.updateFilteredBlob(await filters[filterName](original));
+    const filtered = await applyFilter(filterName, original);
+    this.updateFilteredBlob(filtered);
     this.setState({ loading: false });
   }
 

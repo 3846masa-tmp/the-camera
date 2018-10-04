@@ -7,20 +7,23 @@ function posterize(canvas, imageBitmap) {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const length = imageData.data.length;
 
-  let pointer;
+  let pointer, error;
   try {
     pointer = wasm.alloc(length);
     const buffer = new Uint8ClampedArray(wasm.memory.buffer, pointer, length);
     buffer.set(imageData.data);
     wasm.posterize(pointer, buffer.length);
+    imageData.data.set(buffer);
+    ctx.putImageData(imageData, 0, 0);
   } catch (err) {
+    error = err;
+  } finally {
     wasm.dealloc(pointer, length);
-    throw err;
   }
-  wasm.dealloc(pointer, length);
 
-  imageData.data.set(buffer);
-  ctx.putImageData(imageData, 0, 0);
+  if (error) {
+    throw error;
+  }
 }
 
-export { posterize };
+export default posterize;

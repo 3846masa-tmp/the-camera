@@ -16,7 +16,7 @@ class PreviewController extends React.Component {
     { icon: faAdjust, name: 'grayScale' },
     { icon: faCameraRetro, name: 'retro' },
     { icon: faSave, name: 'save' },
-    { icon: faPalette, name: 'ink' },
+    { icon: faPalette, name: 'posterize' },
     { icon: faSmileWink, name: 'funny' },
   ];
 
