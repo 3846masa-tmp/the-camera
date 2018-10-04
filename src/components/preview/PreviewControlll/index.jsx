@@ -1,5 +1,5 @@
 import React from 'react';
-import { faAdjust, faCameraRetro, faPenNib, faSmileWink, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faAdjust, faCameraRetro, faPalette, faSmileWink, faSave } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.css';
 import PreviewControllerButton from '~/components/preview/PreviewControllerButton';
 
@@ -16,7 +16,7 @@ class PreviewController extends React.Component {
     { icon: faAdjust, name: 'grayScale' },
     { icon: faCameraRetro, name: 'retro' },
     { icon: faSave, name: 'save' },
-    { icon: faPenNib, name: 'ink' },
+    { icon: faPalette, name: 'ink' },
     { icon: faSmileWink, name: 'funny' },
   ];
 

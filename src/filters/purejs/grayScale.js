@@ -10,7 +10,10 @@ function grayScale(canvas, imageBitmap) {
   const buffer = imageData.data;
 
   for (let idx = 0; idx < buffer.length; idx += 4) {
-    const [red, green, blue] = buffer.slice(idx, idx + 3);
+    const red = buffer[idx];
+    const green = buffer[idx + 1];
+    const blue = buffer[idx + 2];
+
     const arg = Math.floor(0.2126 * red + 0.7152 * green + 0.0722 * blue);
     buffer.set([arg, arg, arg], idx);
   }
