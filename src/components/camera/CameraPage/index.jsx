@@ -13,6 +13,7 @@ import getConstraintsWithFacingMode from '~/helpers/getConstraintsWithFacingMode
  * @property {MediaStream} stream
  * @property {Record<string, *>} constraints
  * @property {'user' | 'environment'} facingMode
+ * @property {number} zoom
  */
 
 class CameraPage extends React.Component {
@@ -21,6 +22,7 @@ class CameraPage extends React.Component {
     stream: null,
     constraints: {},
     facingMode: null,
+    zoom: 1,
   };
 
   componentDidMount() {
@@ -31,6 +33,9 @@ class CameraPage extends React.Component {
   componentDidUpdate(_prevProps, prevState) {
     if (this.state.facingMode !== prevState.facingMode) {
       this.updateStream();
+    }
+    if (this.state.zoom !== prevState.zoom) {
+      this.updateZoom();
     }
   }
 
@@ -54,6 +59,14 @@ class CameraPage extends React.Component {
     }
   }
 
+  async updateZoom() {
+    const { stream, zoom } = this.state;
+    const videoTrack = stream.getVideoTracks()[0];
+    await videoTrack.applyConstraints({
+      advanced: [{ zoom }],
+    });
+  }
+
   closeStream() {
     const { stream } = this.state;
     if (stream) {
@@ -74,12 +87,26 @@ class CameraPage extends React.Component {
     return constraints.user && constraints.environment;
   }
 
+  get zoomRangeOptions() {
+    const { constraints, facingMode } = this.state;
+    if (constraints[facingMode]) {
+      return constraints[facingMode].capabilities.zoom;
+    }
+    return {};
+  }
+
   onClickToggleFacingMode = () => {
     if (this.canToggleFacingMode) {
       this.setState(({ facingMode: current }) => ({
         facingMode: current === 'user' ? 'environment' : 'user',
       }));
     }
+  };
+
+  /** @param {React.FormEvent<HTMLInputElement>} ev */
+  onChangeZoom = (ev) => {
+    const value = ev.target.value;
+    this.setState({ zoom: value });
   };
 
   render() {
@@ -90,6 +117,8 @@ class CameraPage extends React.Component {
         <CameraController
           onClickShutter={this.onClickShutter}
           onClickToggleFacingMode={this.onClickToggleFacingMode}
+          onChangeZoom={this.onChangeZoom}
+          zoomRangeOptions={this.zoomRangeOptions}
           disabledToggleButton={!this.canToggleFacingMode}
         />
       </Layout>

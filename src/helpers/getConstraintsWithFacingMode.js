@@ -38,12 +38,16 @@ async function getConstraintsWithFacingMode(facingMode, aspectRatio = ASPECT_RAT
     aspectRatio: { ideal: aspectRatio },
   };
 
+  // MediaTrack.getCapabilities isn't supported in Firefox
+  const capabilities = videoTrack.getCapabilities ? videoTrack.getCapabilities() : {};
+
   // Stop all tracks
   for (const track of stream.getTracks()) {
     track.stop();
   }
 
   return {
+    capabilities,
     recommended,
   };
 }
