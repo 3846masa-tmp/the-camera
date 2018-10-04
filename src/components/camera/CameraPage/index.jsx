@@ -5,9 +5,13 @@ import Layout from '~/components/common/Layout';
 import CameraView from '~/components/camera/CameraView';
 import CameraController from '~/components/camera/CameraController';
 import takePhotoFromStream from '~/helpers/takePhotoFromStream';
-import saveAs from '~/helpers/saveAs';
 import getConstraintsWithFacingMode from '~/helpers/getConstraintsWithFacingMode';
 import getGeolocation from '~/helpers/getGeolocation';
+
+/**
+ * @typedef Props
+ * @property {(blob: Blob) => void} onTakePhoto
+ */
 
 /**
  * @typedef State
@@ -17,6 +21,7 @@ import getGeolocation from '~/helpers/getGeolocation';
  * @property {number} zoom
  */
 
+/** @extends {React.Component<Props, State>} */
 class CameraPage extends React.Component {
   /** @type {State} */
   state = {
@@ -38,6 +43,10 @@ class CameraPage extends React.Component {
     if (this.state.zoom !== prevState.zoom) {
       this.updateZoom();
     }
+  }
+
+  componentWillUnmount() {
+    this.closeStream();
   }
 
   async initialize() {
@@ -81,7 +90,7 @@ class CameraPage extends React.Component {
   onClickShutter = async () => {
     const { stream } = this.state;
     const blob = await takePhotoFromStream(stream);
-    saveAs(blob, `${Date.now()}.jpg`);
+    this.props.onTakePhoto(blob);
   };
 
   get canToggleFacingMode() {
