@@ -1,9 +1,26 @@
 import createVideoElement from '~/helpers/createVideoElement';
+import EXIF from '~/helpers/EXIF';
+import getGeolocation from '~/helpers/getGeolocation';
 
 /** @param {MediaStream} stream */
 async function takePhotoFromStream(stream) {
   const source = await getSourceFromMediaStream(stream);
-  const blob = await getBlobFromSource(source);
+
+  let size = { width: source.width, height: source.height };
+  // If source is HTMLVideoElement, use videoWidth and videoHeight.
+  if (source instanceof HTMLVideoElement) {
+    size = {
+      width: source.videoWidth,
+      height: source.videoHeight,
+    };
+  }
+
+  const { coords } = await getGeolocation();
+  const blob = await EXIF.insertEXIFToBlob(await getBlobFromSource(source, size), {
+    ...size,
+    latitude: coords.latitude,
+    longitude: coords.longitude,
+  });
 
   if (source instanceof HTMLVideoElement) {
     source.remove();
@@ -31,22 +48,12 @@ async function getSourceFromMediaStream(stream) {
 
 /**
  * @param {HTMLVideoElement | ImageBitmap} source
+ * @param {{ width: number; height: number; }} size
  * @returns {Promise<Blob>}
  */
-async function getBlobFromSource(source) {
+async function getBlobFromSource(source, size) {
   const canvas = document.createElement('canvas');
-
-  if (source instanceof HTMLVideoElement) {
-    Object.assign(canvas, {
-      width: source.videoWidth,
-      height: source.videoHeight,
-    });
-  } else {
-    Object.assign(canvas, {
-      width: source.width,
-      height: source.height,
-    });
-  }
+  Object.assign(canvas, size);
 
   const ctx = canvas.getContext('2d');
   ctx.drawImage(source, 0, 0);

@@ -7,6 +7,7 @@ import CameraController from '~/components/camera/CameraController';
 import takePhotoFromStream from '~/helpers/takePhotoFromStream';
 import saveAs from '~/helpers/saveAs';
 import getConstraintsWithFacingMode from '~/helpers/getConstraintsWithFacingMode';
+import getGeolocation from '~/helpers/getGeolocation';
 
 /**
  * @typedef State
@@ -40,6 +41,7 @@ class CameraPage extends React.Component {
   }
 
   async initialize() {
+    await getGeolocation();
     const constraints = {
       user: await getConstraintsWithFacingMode('user'),
       environment: await getConstraintsWithFacingMode('environment'),
