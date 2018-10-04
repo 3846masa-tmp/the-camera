@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -u
+set -eu
 
 echo "Setup Rustup"
 curl https://sh.rustup.rs -sSf | sh
