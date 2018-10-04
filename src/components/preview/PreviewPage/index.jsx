@@ -3,6 +3,8 @@ import React from 'react';
 import Layout from '~/components/common/Layout';
 import PreviewView from '~/components/preview/PreviewView';
 import PreviewController from '~/components/preview/PreviewControlll';
+import * as filters from '~/filters';
+import EXIF from '~/helpers/EXIF';
 
 /**
  * @typedef Props
@@ -39,6 +41,22 @@ class PreviewPage extends React.Component {
     if (this.state.filtered !== prevState.filtered) {
       this.updateBlobUrl();
     }
+    if (this.state.filterName !== prevState.filterName) {
+      this.applyFilter();
+    }
+  }
+
+  async applyFilter() {
+    const { original } = this.props;
+    const { filterName } = this.state;
+
+    if (!filters[filterName]) {
+      this.updateFilteredBlob(original);
+      return;
+    }
+    this.setState({ loading: true });
+    this.updateFilteredBlob(await filters[filterName](original));
+    this.setState({ loading: false });
   }
 
   updateBlobUrl() {
@@ -55,9 +73,15 @@ class PreviewPage extends React.Component {
     this.setState({ filtered: blob });
   };
 
-  onSave = () => {
+  onSave = async () => {
+    const { original, onSave } = this.props;
     const { filtered } = this.state;
-    this.props.onSave(filtered);
+    if (original !== filtered) {
+      const inserted = await EXIF.copyEXIF(original, filtered);
+      onSave(inserted);
+    } else {
+      onSave(original);
+    }
   };
 
   /** @param {string} name */

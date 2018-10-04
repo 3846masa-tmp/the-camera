@@ -95,6 +95,16 @@ class EXIF {
     const inserted = piexif.insert(piexif.dump(exif), await blobToBinaryString(blob));
     return binaryStringToBlob(inserted, { type: blob.type });
   }
+
+  /**
+   * @param {Blob} from
+   * @param {Blob} to
+   */
+  static async copyEXIF(from, to) {
+    const exif = piexif.load(await blobToBinaryString(from));
+    const inserted = piexif.insert(piexif.dump(exif), await blobToBinaryString(to));
+    return binaryStringToBlob(inserted, { type: to.type });
+  }
 }
 
 export default EXIF;
