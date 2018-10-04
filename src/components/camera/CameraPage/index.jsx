@@ -69,12 +69,29 @@ class CameraPage extends React.Component {
     saveAs(blob, `${Date.now()}.jpg`);
   };
 
+  get canToggleFacingMode() {
+    const { constraints } = this.state;
+    return constraints.user && constraints.environment;
+  }
+
+  onClickToggleFacingMode = () => {
+    if (this.canToggleFacingMode) {
+      this.setState(({ facingMode: current }) => ({
+        facingMode: current === 'user' ? 'environment' : 'user',
+      }));
+    }
+  };
+
   render() {
     const { stream } = this.state;
     return (
       <Layout>
         <CameraView srcObject={stream} />
-        <CameraController onClickShutter={this.onClickShutter} />
+        <CameraController
+          onClickShutter={this.onClickShutter}
+          onClickToggleFacingMode={this.onClickToggleFacingMode}
+          disabledToggleButton={!this.canToggleFacingMode}
+        />
       </Layout>
     );
   }
