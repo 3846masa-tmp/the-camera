@@ -76,6 +76,8 @@ const makeWebGLRenderFromShaderTexts = (shaders) => async (canvas, imageBitmap) 
 
   /** 三角形を描画する */
   gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+  return gl;
 };
 
 export default makeWebGLRenderFromShaderTexts;

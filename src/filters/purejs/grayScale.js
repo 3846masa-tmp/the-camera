@@ -19,6 +19,8 @@ function grayScale(canvas, imageBitmap) {
   }
 
   ctx.putImageData(imageData, 0, 0);
+
+  return ctx;
 }
 
 export default grayScale;

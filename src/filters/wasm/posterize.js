@@ -24,6 +24,8 @@ function posterize(canvas, imageBitmap) {
   if (error) {
     throw error;
   }
+
+  return ctx;
 }
 
 export default posterize;
