@@ -20,12 +20,13 @@
     "ress": "^1.2.2"
   },
   "devDependencies": {
+    "@3846masa/parcel-plugin-workers-patch": "github:3846masa-tmp/parcel-plugin-monkey-patch-for-wasm-in-worker",
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "browserslist-config-google": "^1.5.0",
     "glslify-bundle": "^5.0.0",
     "glslify-deps": "^1.3.1",
-    "parcel-bundler": "github:3846masa-tmp/parcel#support-wasm-in-workers",
+    "parcel-bundler": "^1.10.1",
     "parcel-plugin-sw-cache": "^0.2.6",
     "postcss-modules": "^1.4.1",
     "postcss-preset-env": "^6.0.7",
