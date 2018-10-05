@@ -4,7 +4,7 @@
 
 "@3846masa/parcel-plugin-workers-patch@github:3846masa-tmp/parcel-plugin-monkey-patch-for-wasm-in-worker":
   version "0.0.0"
-  resolved "https://codeload.github.com/3846masa-tmp/parcel-plugin-monkey-patch-for-wasm-in-worker/tar.gz/a40475be1dc89cb349be411e4b30b46cf0813f25"
+  resolved "https://codeload.github.com/3846masa-tmp/parcel-plugin-monkey-patch-for-wasm-in-worker/tar.gz/b4e1344c50acf4d4a938c217710c3ed867400b1f"
 
 "@babel/code-frame@7.0.0-beta.44":
   version "7.0.0-beta.44"
