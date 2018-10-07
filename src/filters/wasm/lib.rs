@@ -27,8 +27,12 @@ pub fn posterize(pointer: *mut u8, bytesize: usize) {
     let green = sl[idx + 1] as f32;
     let blue = sl[idx + 2] as f32;
 
-    sl[idx] = (((red / range).floor() + 0.5) * range) as u8;
-    sl[idx + 1] = (((green / range).floor() + 0.5) * range) as u8;
-    sl[idx + 2] = (((blue / range).floor() + 0.5) * range) as u8;
+    let rStep = (red / range).floor();
+    let gStep = (green / range).floor();
+    let bStep = (blue / range).floor();
+
+    sl[idx] = ((rStep + 0.5) * range).min(255.0).max(0.0) as u8;
+    sl[idx + 1] = ((gStep + 0.5) * range).min(255.0).max(0.0) as u8;
+    sl[idx + 2] = ((bStep + 0.5) * range).min(255.0).max(0.0) as u8;
   }
 }
