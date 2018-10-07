@@ -6,7 +6,11 @@ self.addEventListener('message', async ({ data: { filterName, canvas, imageBitma
       return self.postMessage({ status: 'not_found' });
     }
     const ctx = await filters[filterName](canvas, imageBitmap);
-    ctx.commit();
+    if (ctx.commit) {
+      ctx.commit();
+    } else if ('requestAnimationFrame' in self) {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+    }
     return self.postMessage({ status: 'ok' });
   } catch (err) {
     console.error(err);
