@@ -88,8 +88,8 @@ class CameraPage extends React.Component {
   }
 
   onClickShutter = async () => {
-    const { stream } = this.state;
-    const blob = await takePhotoFromStream(stream);
+    const { stream, facingMode } = this.state;
+    const blob = await takePhotoFromStream(stream, facingMode);
     this.props.onTakePhoto(blob);
   };
 
@@ -121,10 +121,10 @@ class CameraPage extends React.Component {
   };
 
   render() {
-    const { stream } = this.state;
+    const { stream, facingMode } = this.state;
     return (
       <Layout>
-        <CameraView srcObject={stream} />
+        <CameraView srcObject={stream} facingMode={facingMode} />
         <CameraController
           onClickShutter={this.onClickShutter}
           onClickToggleFacingMode={this.onClickToggleFacingMode}

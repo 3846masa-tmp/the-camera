@@ -9,6 +9,10 @@
   }
 }
 
+.flip {
+  transform: scaleX(-1);
+}
+
 .video {
   position: absolute;
   top: 0;

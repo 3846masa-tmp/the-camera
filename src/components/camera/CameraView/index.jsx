@@ -3,6 +3,7 @@ import styles from './styles.css';
 
 /**
  * @typedef Props
+ * @property {'user' | 'environment'} [facingMode]
  * @property {MediaStream} [srcObject]
  */
 /** @extends {React.Component<Props>} */
@@ -26,8 +27,10 @@ class CameraView extends React.Component {
   }
 
   render() {
+    const { facingMode } = this.props;
+    const className = [styles.base, facingMode === 'user' && styles.flip].filter((c) => !!c).join('\x20');
     return (
-      <div className={styles.base}>
+      <div className={className}>
         <video muted autoPlay playsInline ref={this.videoRef} className={styles.video} />
       </div>
     );

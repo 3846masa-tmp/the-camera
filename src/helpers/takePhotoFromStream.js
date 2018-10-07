@@ -3,7 +3,7 @@ import EXIF from '~/helpers/EXIF';
 import getGeolocation from '~/helpers/getGeolocation';
 
 /** @param {MediaStream} stream */
-async function takePhotoFromStream(stream) {
+async function takePhotoFromStream(stream, facingMode = 'environment') {
   const source = await getSourceFromMediaStream(stream);
 
   let size = { width: source.width, height: source.height };
@@ -16,7 +16,7 @@ async function takePhotoFromStream(stream) {
   }
 
   const { coords } = await getGeolocation();
-  const blob = await EXIF.insertEXIFToBlob(await getBlobFromSource(source, size), {
+  const blob = await EXIF.insertEXIFToBlob(await getBlobFromSource(source, size, facingMode), {
     ...size,
     latitude: coords.latitude,
     longitude: coords.longitude,
@@ -51,12 +51,17 @@ async function getSourceFromMediaStream(stream) {
  * @param {{ width: number; height: number; }} size
  * @returns {Promise<Blob>}
  */
-async function getBlobFromSource(source, size) {
+async function getBlobFromSource(source, size, facingMode) {
   const canvas = document.createElement('canvas');
   Object.assign(canvas, size);
 
   const ctx = canvas.getContext('2d');
-  ctx.drawImage(source, 0, 0);
+  if (facingMode === 'user') {
+    ctx.scale(-1, 1);
+    ctx.drawImage(source, -size.width, 0);
+  } else {
+    ctx.drawImage(source, 0, 0);
+  }
 
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg'));
   return blob;
